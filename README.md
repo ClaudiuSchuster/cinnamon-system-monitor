@@ -15,6 +15,8 @@ orientation automatically.
 - CPU, memory, swap and temperature data come directly from Linux `/proc` and
   `/sys` interfaces.
 - AMD GPU and VRAM data use `radeontop`.
+- GPU and VRAM disappear automatically when `radeontop` or supported GPU data
+  is unavailable, and each can also be disabled explicitly in the settings.
 - Warning and critical thresholds, colors and visible metrics are configurable
   through Cinnamon's native applet settings.
 

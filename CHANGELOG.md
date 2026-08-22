@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 — 2026-08-22
+
+- Hide GPU and VRAM metrics automatically when `radeontop` is missing or no
+  supported GPU data is available.
+- Restore available GPU metrics automatically while respecting their
+  individual visibility settings.
+
 ## 1.2.1 — 2026-08-22
 
 - Give VRAM separate warning and critical thresholds.

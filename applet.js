@@ -31,6 +31,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this._destroyed = false;
         this._gpuCancellable = null;
         this._gpuBusy = false;
+        this._gpuAvailable = this._findRadeontop() !== null;
         this._cpuSample = null;
         this._cpuTempPath = null;
         this._actors = {};
@@ -141,8 +142,8 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
             { id: "memory", short: "RAM", icon: "ram_white.svg", visible: this.showMemory },
             { id: "swap", short: "SWP", icon: "swap_white.svg", visible: this.showSwap },
             { id: "temperature", short: "TMP", icon: "temp_white.svg", visible: this.showTemperature },
-            { id: "gpu", short: "GPU", icon: "gpu_white.svg", visible: this.showGpu },
-            { id: "vram", short: "VRM", icon: "vram_white.svg", visible: this.showVram }
+            { id: "gpu", short: "GPU", icon: "gpu_white.svg", visible: this.showGpu && this._gpuAvailable },
+            { id: "vram", short: "VRM", icon: "vram_white.svg", visible: this.showVram && this._gpuAvailable }
         ];
     }
 
@@ -355,11 +356,12 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
     _updateGpu() {
         if (this._gpuBusy || (!this.showGpu && !this.showVram)) return;
 
-        const executable = GLib.find_program_in_path("radeontop");
+        const executable = this._findRadeontop();
         if (!executable) {
             this._details.gpuStatus = "radeontop is not installed";
             this._values.gpu = null;
             this._values.vram = null;
+            this._setGpuAvailability(false);
             return;
         }
 
@@ -389,14 +391,21 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
                         this._details.gpuStatus = errorText.split("\n")[0].slice(0, 160);
                         this._values.gpu = null;
                         this._values.vram = null;
+                        this._setGpuAvailability(false);
                     } else {
                         this._values.gpu = parsed.gpuPercentage;
                         this._values.vram = parsed.vramPercentage;
                         this._details.vram = `${parsed.vramUsed.toFixed(1)} ${parsed.vramUnit}`;
                         this._details.gpuStatus = "AMD GPU data available";
+                        this._setGpuAvailability(true);
                     }
                 } catch (error) {
-                    if (!error.matches || !error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                    const cancelled = error.matches && error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED);
+                    if (!cancelled) {
+                        this._details.gpuStatus = "Could not read radeontop data";
+                        this._values.gpu = null;
+                        this._values.vram = null;
+                        this._setGpuAvailability(false);
                         global.logError(`${UUID}: radeontop failed: ${error}`);
                     }
                 }
@@ -407,8 +416,22 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
             this._gpuBusy = false;
             this._gpuCancellable = null;
             this._details.gpuStatus = "Could not start radeontop";
+            this._values.gpu = null;
+            this._values.vram = null;
+            this._setGpuAvailability(false);
             global.logError(`${UUID}: could not start radeontop: ${error}`);
         }
+    }
+
+    _findRadeontop() {
+        return GLib.find_program_in_path("radeontop");
+    }
+
+    _setGpuAvailability(available) {
+        if (this._gpuAvailable === available) return;
+
+        this._gpuAvailable = available;
+        if (!this._destroyed && this._root) this._rebuildMetrics();
     }
 
     _applyValues() {
