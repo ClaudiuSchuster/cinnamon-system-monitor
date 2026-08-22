@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 — 2026-08-22
+
+- Add a settings switch for choosing metric icons or text labels.
+- Add vertical-panel screenshots of both display modes to the README.
+
 ## 1.1.0 — 2026-08-22
 
 - Replace metric text abbreviations with compact SVG symbols.

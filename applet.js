@@ -62,6 +62,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this.refreshInterval = 2000;
         this.fontSize = 90;
         this.separator = "|";
+        this.useIcons = true;
         this.showColors = true;
         this.normalColor = "#ffffff";
         this.warningColor = "#f6d32d";
@@ -96,6 +97,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this.settings.bind("refresh-interval", "refreshInterval", this._onIntervalChanged.bind(this));
         this.settings.bind("font-size", "fontSize", styleChanged);
         this.settings.bind("separator", "separator", layoutChanged);
+        this.settings.bind("use-icons", "useIcons", layoutChanged);
         this.settings.bind("show-colors", "showColors", styleChanged);
         this.settings.bind("normal-color", "normalColor", styleChanged);
         this.settings.bind("warning-color", "warningColor", styleChanged);
@@ -180,9 +182,10 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         actor.style = this._isVertical ? "padding: 1px 0px;" : "";
 
         const iconPath = `${this.metadata.path}/icons/${definition.icon}`;
+        const useIcon = this.useIcons && GLib.file_test(iconPath, GLib.FileTest.EXISTS);
         let symbol;
 
-        if (GLib.file_test(iconPath, GLib.FileTest.EXISTS)) {
+        if (useIcon) {
             symbol = new St.Icon({
                 gicon: new Gio.FileIcon({ file: Gio.File.new_for_path(iconPath) }),
                 icon_size: 16,
@@ -208,7 +211,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
 
         actor.add_child(symbol);
         actor.add_child(value);
-        return { actor, symbol, value };
+        return { actor, symbol, value, usesText: !useIcon };
     }
 
     _buildMenu(orientation) {
@@ -414,6 +417,9 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
             if (!metric) continue;
 
             metric.value.set_text(this._formatMetric(definition.id, this._values[definition.id]));
+            if (metric.usesText) {
+                metric.symbol.style = `font-size: ${Math.max(60, this.fontSize - 20)}%; font-weight: 600;`;
+            }
             metric.value.style = `font-size: ${this.fontSize}%; color: ${this._metricColor(definition.id)};`;
         }
 

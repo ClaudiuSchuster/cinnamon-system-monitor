@@ -20,7 +20,7 @@
         "display-section": {
             "type": "section",
             "title": "Display",
-            "keys": ["refresh-interval", "font-size", "separator", "temperature-unit"]
+            "keys": ["refresh-interval", "font-size", "use-icons", "separator", "temperature-unit"]
         },
         "gpu-section": {
             "type": "section",
@@ -60,6 +60,12 @@
         "step": 5,
         "units": "%",
         "description": "Font size"
+    },
+    "use-icons": {
+        "type": "switch",
+        "default": true,
+        "description": "Use metric icons",
+        "tooltip": "Turn this off to show CPU, RAM, SWP, TMP, GPU and VRM text labels instead."
     },
     "separator": {
         "type": "entry",
