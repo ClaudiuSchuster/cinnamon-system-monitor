@@ -24,6 +24,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
 
         this.metadata = metadata;
         this._isVertical = this._orientationIsVertical(orientation);
+        this._panelThickness = panelHeight;
         this.setAllowedLayout(Applet.AllowedLayout.BOTH);
 
         this._timeoutId = 0;
@@ -125,18 +126,19 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
             vertical: this._isVertical
         });
         this.actor.add_child(this._root);
+        this._syncPanelThickness();
         this._rebuildMetrics();
         this.set_applet_tooltip("Adaptive System Monitor");
     }
 
     _metricDefinitions() {
         return [
-            { id: "cpu", short: "CPU", visible: this.showCpu },
-            { id: "memory", short: "RAM", visible: this.showMemory },
-            { id: "swap", short: "SWP", visible: this.showSwap },
-            { id: "temperature", short: "TMP", visible: this.showTemperature },
-            { id: "gpu", short: "GPU", visible: this.showGpu },
-            { id: "vram", short: "VRM", visible: this.showVram }
+            { id: "cpu", short: "CPU", icon: "cpu_white.svg", visible: this.showCpu },
+            { id: "memory", short: "RAM", icon: "ram_white.svg", visible: this.showMemory },
+            { id: "swap", short: "SWP", icon: "swap_white.svg", visible: this.showSwap },
+            { id: "temperature", short: "TMP", icon: "temp_white.svg", visible: this.showTemperature },
+            { id: "gpu", short: "GPU", icon: "gpu_white.svg", visible: this.showGpu },
+            { id: "vram", short: "VRM", icon: "vram_white.svg", visible: this.showVram }
         ];
     }
 
@@ -177,22 +179,36 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         actor.x_align = this._isVertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.FILL;
         actor.style = this._isVertical ? "padding: 1px 0px;" : "";
 
-        const name = new St.Label({
-            text: this._isVertical ? definition.short : `${definition.short} `,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER
-        });
+        const iconPath = `${this.metadata.path}/icons/${definition.icon}`;
+        let symbol;
+
+        if (GLib.file_test(iconPath, GLib.FileTest.EXISTS)) {
+            symbol = new St.Icon({
+                gicon: new Gio.FileIcon({ file: Gio.File.new_for_path(iconPath) }),
+                icon_size: 16,
+                x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER,
+                style: this._isVertical ? "padding-bottom: 1px;" : "padding-right: 3px;"
+            });
+        } else {
+            symbol = new St.Label({
+                text: this._isVertical ? definition.short : `${definition.short} `,
+                x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER
+            });
+            symbol.clutter_text.set_line_alignment(Pango.Alignment.CENTER);
+        }
+
         const value = new St.Label({
             text: "--",
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER
         });
-        name.clutter_text.set_line_alignment(Pango.Alignment.CENTER);
         value.clutter_text.set_line_alignment(Pango.Alignment.CENTER);
 
-        actor.add_child(name);
+        actor.add_child(symbol);
         actor.add_child(value);
-        return { actor, name, value };
+        return { actor, symbol, value };
     }
 
     _buildMenu(orientation) {
@@ -239,7 +255,27 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
             ? "padding-left: 0px; padding-right: 0px;"
             : null;
         this._root.set_vertical(this._isVertical);
+        this._syncPanelThickness();
         this._rebuildMetrics();
+    }
+
+    on_panel_height_changed() {
+        if (this._isVertical && this.panel) {
+            this._panelThickness = this.panel.width;
+        }
+        this._syncPanelThickness();
+    }
+
+    _syncPanelThickness() {
+        if (!this._root) return;
+
+        if (this._isVertical) {
+            this._root.set_width(this._panelThickness);
+            this._root.x_align = Clutter.ActorAlign.START;
+        } else {
+            this._root.set_width(-1);
+            this._root.x_align = Clutter.ActorAlign.FILL;
+        }
     }
 
     _orientationIsVertical(orientation) {
@@ -378,7 +414,6 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
             if (!metric) continue;
 
             metric.value.set_text(this._formatMetric(definition.id, this._values[definition.id]));
-            metric.name.style = `font-size: ${Math.max(60, this.fontSize - 20)}%; font-weight: 600;`;
             metric.value.style = `font-size: ${this.fontSize}%; color: ${this._metricColor(definition.id)};`;
         }
 

@@ -5,6 +5,7 @@ check:
 	cjs tests/test-metrics.js
 	python3 -m json.tool metadata.json >/dev/null
 	python3 -m json.tool settings-schema.json >/dev/null
+	python3 tests/check-svg.py icon.svg icons/*.svg
 	shellcheck install.sh uninstall.sh
 
 install:

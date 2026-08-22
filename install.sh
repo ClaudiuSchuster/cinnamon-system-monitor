@@ -7,9 +7,12 @@ data_root=${XDG_DATA_HOME:-"$HOME/.local/share"}
 uuid=system-monitor@claudiu.local
 applet_dir="$data_root/cinnamon/applets/$uuid"
 
-mkdir -p "$applet_dir"
+mkdir -p "$applet_dir/icons"
 for file in applet.js metrics.js metadata.json settings-schema.json icon.svg README.md ATTRIBUTION.md LICENSE; do
     install -m 0644 "$project_dir/$file" "$applet_dir/$file"
+done
+for file in "$project_dir"/icons/*.svg; do
+    install -m 0644 "$file" "$applet_dir/icons/$(basename "$file")"
 done
 
 printf '%s\n' "Adaptive System Monitor installed. Add or reload it in Cinnamon Applets."

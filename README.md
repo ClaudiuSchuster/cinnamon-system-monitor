@@ -4,9 +4,12 @@ A Cinnamon applet that combines CPU, memory, swap, CPU temperature, AMD GPU
 and VRAM monitoring in one panel item. Its layout follows the panel
 orientation automatically.
 
+<img src="docs/vertical-panel.png" alt="Adaptive System Monitor in a vertical Cinnamon panel" width="120">
+
 - Horizontal panels show a compact single row.
 - Vertical panels stack metrics and keep every value narrow enough for a
   40 px panel.
+- Metric symbols keep the panel readable without repeating text labels.
 - CPU, memory, swap and temperature data come directly from Linux `/proc` and
   `/sys` interfaces.
 - AMD GPU and VRAM data use `radeontop`.
@@ -44,8 +47,8 @@ applet files; user settings are deliberately retained.
 make check
 ```
 
-The checks validate JavaScript syntax, metric parsers, JSON schemas and shell
-scripts.
+The checks validate JavaScript syntax, metric parsers, JSON schemas, SVG
+assets and shell scripts.
 
 ## Origin and license
 

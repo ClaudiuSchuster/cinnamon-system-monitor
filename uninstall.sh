@@ -6,7 +6,7 @@ data_root=${XDG_DATA_HOME:-"$HOME/.local/share"}
 applet_dir="$data_root/cinnamon/applets/system-monitor@claudiu.local"
 
 if [ -d "$applet_dir" ]; then
-    find "$applet_dir" -mindepth 1 -maxdepth 1 -delete
+    find "$applet_dir" -mindepth 1 -delete
     rmdir "$applet_dir"
 fi
 
