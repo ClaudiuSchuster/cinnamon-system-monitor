@@ -22,6 +22,22 @@ orientation automatically.
 - The click menu includes system-monitor launchers and a `Restart Cinnamon`
   action inherited from the Combined Monitor workflow.
 
+## Settings
+
+All options are available through Cinnamon's native three-tab settings dialog.
+
+### General
+
+![General display and AMD GPU settings](docs/settings-general.png)
+
+### Metrics
+
+![Individual metric visibility settings](docs/settings-metrics.png)
+
+### Colors and thresholds
+
+![Metric colors and warning or critical thresholds](docs/settings-thresholds.png)
+
 ## Requirements
 
 Cinnamon 5.8 or newer is supported. AMD GPU metrics require `radeontop`:
