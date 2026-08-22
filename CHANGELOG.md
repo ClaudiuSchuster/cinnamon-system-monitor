@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1 — 2026-08-22
+
+- Give VRAM separate warning and critical thresholds.
+- Set the default VRAM warning threshold to 90%.
+- Refresh both README screenshots with normal-color VRAM values.
+
 ## 1.2.0 — 2026-08-22
 
 - Add a settings switch for choosing metric icons or text labels.

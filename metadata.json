@@ -2,7 +2,7 @@
     "uuid": "system-monitor@claudiu.local",
     "name": "Adaptive System Monitor",
     "description": "CPU, memory, temperature and AMD GPU monitoring with layouts for horizontal and vertical Cinnamon panels.",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "author": "Claudiu Schuster",
     "max-instances": 1,
     "cinnamon-version": ["5.8", "6.0", "6.2", "6.4", "6.6"],

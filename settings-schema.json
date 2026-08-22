@@ -40,7 +40,7 @@
         "threshold-section": {
             "type": "section",
             "title": "Warning / critical thresholds",
-            "keys": ["cpu-warning", "cpu-critical", "memory-warning", "memory-critical", "swap-warning", "swap-critical", "temperature-warning", "temperature-critical", "gpu-warning", "gpu-critical"]
+            "keys": ["cpu-warning", "cpu-critical", "memory-warning", "memory-critical", "swap-warning", "swap-critical", "temperature-warning", "temperature-critical", "gpu-warning", "gpu-critical", "vram-warning", "vram-critical"]
         }
     },
     "refresh-interval": {
@@ -103,6 +103,8 @@
     "swap-critical": {"type": "spinbutton", "default": 80, "min": 0, "max": 100, "step": 1, "units": "%", "description": "Swap critical"},
     "temperature-warning": {"type": "spinbutton", "default": 75, "min": 0, "max": 120, "step": 1, "units": "°C", "description": "Temperature warning"},
     "temperature-critical": {"type": "spinbutton", "default": 90, "min": 0, "max": 120, "step": 1, "units": "°C", "description": "Temperature critical"},
-    "gpu-warning": {"type": "spinbutton", "default": 75, "min": 0, "max": 100, "step": 1, "units": "%", "description": "GPU / VRAM warning"},
-    "gpu-critical": {"type": "spinbutton", "default": 95, "min": 0, "max": 100, "step": 1, "units": "%", "description": "GPU / VRAM critical"}
+    "gpu-warning": {"type": "spinbutton", "default": 75, "min": 0, "max": 100, "step": 1, "units": "%", "description": "GPU warning"},
+    "gpu-critical": {"type": "spinbutton", "default": 95, "min": 0, "max": 100, "step": 1, "units": "%", "description": "GPU critical"},
+    "vram-warning": {"type": "spinbutton", "default": 90, "min": 0, "max": 100, "step": 1, "units": "%", "description": "VRAM warning"},
+    "vram-critical": {"type": "spinbutton", "default": 95, "min": 0, "max": 100, "step": 1, "units": "%", "description": "VRAM critical"}
 }

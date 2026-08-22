@@ -85,6 +85,8 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this.temperatureCritical = 90;
         this.gpuWarning = 75;
         this.gpuCritical = 95;
+        this.vramWarning = 90;
+        this.vramCritical = 95;
     }
 
     _bindSettings(instanceId) {
@@ -112,7 +114,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this.settings.bind("temperature-unit", "temperatureUnit", styleChanged);
         this.settings.bind("gpu-bus", "gpuBus", gpuChanged);
 
-        for (const metric of ["cpu", "memory", "swap", "temperature", "gpu"]) {
+        for (const metric of ["cpu", "memory", "swap", "temperature", "gpu", "vram"]) {
             this.settings.bind(`${metric}-warning`, `${metric}Warning`, styleChanged);
             this.settings.bind(`${metric}-critical`, `${metric}Critical`, styleChanged);
         }
@@ -443,9 +445,8 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         const value = this._values[id];
         if (value === null || value === undefined || !Number.isFinite(value)) return this.normalColor;
 
-        const thresholdId = id === "vram" ? "gpu" : id;
-        const warning = this[`${thresholdId}Warning`];
-        const critical = this[`${thresholdId}Critical`];
+        const warning = this[`${id}Warning`];
+        const critical = this[`${id}Critical`];
         if (value >= critical) return this.criticalColor;
         if (value >= warning) return this.warningColor;
         return this.normalColor;
