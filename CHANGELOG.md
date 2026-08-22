@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 — 2026-08-22
+
+- Add the Combined Monitor-style `Restart Cinnamon` action to the applet menu.
+
 ## 1.3.0 — 2026-08-22
 
 - Hide GPU and VRAM metrics automatically when `radeontop` is missing or no

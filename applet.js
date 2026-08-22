@@ -246,6 +246,16 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
             Util.spawn(args);
         });
         this.menu.addMenuItem(radeontopItem);
+
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+        const restartItem = new PopupMenu.PopupIconMenuItem(
+            "Restart Cinnamon",
+            "view-refresh-symbolic",
+            St.IconType.SYMBOLIC
+        );
+        restartItem.connect("activate", () => global.reexec_self());
+        this.menu.addMenuItem(restartItem);
     }
 
     on_applet_clicked() {
