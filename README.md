@@ -30,7 +30,7 @@ All options are available through Cinnamon's native three-tab settings dialog.
 
 ### General
 
-![General display and AMD GPU settings](docs/settings-general.png?v=1.4.0)
+![General display and AMD GPU settings](docs/settings-general-compact.png)
 
 ### Metrics
 
