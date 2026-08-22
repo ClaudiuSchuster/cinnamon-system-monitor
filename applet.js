@@ -94,6 +94,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this.settings = new Settings.AppletSettings(this, UUID, instanceId);
 
         const layoutChanged = this._onLayoutSettingChanged.bind(this);
+        const visibilityChanged = this._onMetricVisibilityChanged.bind(this);
         const styleChanged = this._onStyleSettingChanged.bind(this);
         const gpuChanged = this._onGpuSettingChanged.bind(this);
 
@@ -106,12 +107,12 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this.settings.bind("warning-color", "warningColor", styleChanged);
         this.settings.bind("critical-color", "criticalColor", styleChanged);
 
-        this.settings.bind("show-cpu", "showCpu", layoutChanged);
-        this.settings.bind("show-memory", "showMemory", layoutChanged);
-        this.settings.bind("show-swap", "showSwap", layoutChanged);
-        this.settings.bind("show-temperature", "showTemperature", layoutChanged);
-        this.settings.bind("show-gpu", "showGpu", layoutChanged);
-        this.settings.bind("show-vram", "showVram", layoutChanged);
+        this.settings.bind("show-cpu", "showCpu", visibilityChanged);
+        this.settings.bind("show-memory", "showMemory", visibilityChanged);
+        this.settings.bind("show-swap", "showSwap", visibilityChanged);
+        this.settings.bind("show-temperature", "showTemperature", visibilityChanged);
+        this.settings.bind("show-gpu", "showGpu", visibilityChanged);
+        this.settings.bind("show-vram", "showVram", visibilityChanged);
         this.settings.bind("temperature-unit", "temperatureUnit", styleChanged);
         this.settings.bind("gpu-bus", "gpuBus", gpuChanged);
 
@@ -302,6 +303,21 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         this._rebuildMetrics();
     }
 
+    _onMetricVisibilityChanged() {
+        if (!this.showGpu) this._values.gpu = null;
+        if (!this.showVram) {
+            this._values.vram = null;
+            this._details.vram = "--";
+        }
+
+        if (!this.showGpu && !this.showVram && this._gpuCancellable) {
+            this._gpuCancellable.cancel();
+        }
+
+        this._rebuildMetrics();
+        this._updateAll();
+    }
+
     _onStyleSettingChanged() {
         this._applyValues();
     }
@@ -340,27 +356,44 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
     }
 
     _updateSystemMetrics() {
-        const cpuText = this._readTextFile("/proc/stat");
-        if (cpuText !== null) {
-            const cpu = Metrics.parseCpuStat(cpuText, this._cpuSample);
-            if (cpu) {
-                this._cpuSample = cpu.sample;
-                this._values.cpu = cpu.percentage;
+        if (this.showCpu) {
+            const cpuText = this._readTextFile("/proc/stat");
+            if (cpuText !== null) {
+                const cpu = Metrics.parseCpuStat(cpuText, this._cpuSample);
+                if (cpu) {
+                    this._cpuSample = cpu.sample;
+                    this._values.cpu = cpu.percentage;
+                }
             }
+        } else {
+            this._values.cpu = null;
         }
 
-        const memoryText = this._readTextFile("/proc/meminfo");
-        const memory = memoryText === null ? null : Metrics.parseMemInfo(memoryText);
-        if (memory) {
-            this._values.memory = memory.memoryPercentage;
-            this._values.swap = memory.swapPercentage;
-            this._details.memory = `${this._formatKiB(memory.memoryUsedKiB)} / ${this._formatKiB(memory.memoryTotalKiB)}`;
-            this._details.swap = `${this._formatKiB(memory.swapUsedKiB)} / ${this._formatKiB(memory.swapTotalKiB)}`;
+        if (this.showMemory || this.showSwap) {
+            const memoryText = this._readTextFile("/proc/meminfo");
+            const memory = memoryText === null ? null : Metrics.parseMemInfo(memoryText);
+            if (memory) {
+                this._values.memory = this.showMemory ? memory.memoryPercentage : null;
+                this._values.swap = this.showSwap ? memory.swapPercentage : null;
+                if (this.showMemory) {
+                    this._details.memory = `${this._formatKiB(memory.memoryUsedKiB)} / ${this._formatKiB(memory.memoryTotalKiB)}`;
+                }
+                if (this.showSwap) {
+                    this._details.swap = `${this._formatKiB(memory.swapUsedKiB)} / ${this._formatKiB(memory.swapTotalKiB)}`;
+                }
+            }
+        } else {
+            this._values.memory = null;
+            this._values.swap = null;
         }
 
-        if (!this._cpuTempPath) this._cpuTempPath = this._discoverCpuTemperaturePath();
-        const rawTemperature = this._cpuTempPath ? this._readNumberFile(this._cpuTempPath) : null;
-        this._values.temperature = rawTemperature === null ? null : rawTemperature / 1000;
+        if (this.showTemperature) {
+            if (!this._cpuTempPath) this._cpuTempPath = this._discoverCpuTemperaturePath();
+            const rawTemperature = this._cpuTempPath ? this._readNumberFile(this._cpuTempPath) : null;
+            this._values.temperature = rawTemperature === null ? null : rawTemperature / 1000;
+        } else {
+            this._values.temperature = null;
+        }
     }
 
     _updateGpu() {
@@ -403,9 +436,11 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
                         this._values.vram = null;
                         this._setGpuAvailability(false);
                     } else {
-                        this._values.gpu = parsed.gpuPercentage;
-                        this._values.vram = parsed.vramPercentage;
-                        this._details.vram = `${parsed.vramUsed.toFixed(1)} ${parsed.vramUnit}`;
+                        this._values.gpu = this.showGpu ? parsed.gpuPercentage : null;
+                        this._values.vram = this.showVram ? parsed.vramPercentage : null;
+                        if (this.showVram) {
+                            this._details.vram = `${parsed.vramUsed.toFixed(1)} ${parsed.vramUnit}`;
+                        }
                         this._details.gpuStatus = "AMD GPU data available";
                         this._setGpuAvailability(true);
                     }

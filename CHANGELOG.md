@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 — 2026-08-22
+
+- Stop polling hidden CPU, memory / swap and temperature metrics.
+- Continue sharing one `/proc/meminfo` read when either memory metric is shown.
+- Refresh metrics immediately when their visibility setting changes.
+
 ## 1.3.1 — 2026-08-22
 
 - Add the Combined Monitor-style `Restart Cinnamon` action to the applet menu.

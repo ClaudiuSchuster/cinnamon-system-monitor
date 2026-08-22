@@ -19,6 +19,8 @@ orientation automatically.
   is unavailable, and each can also be disabled explicitly in the settings.
 - Warning and critical thresholds, colors and visible metrics are configurable
   through Cinnamon's native applet settings.
+- Hidden system metrics are not polled; hiding both GPU metrics also prevents
+  `radeontop` from running.
 - The click menu includes system-monitor launchers and a `Restart Cinnamon`
   action inherited from the Combined Monitor workflow.
 
