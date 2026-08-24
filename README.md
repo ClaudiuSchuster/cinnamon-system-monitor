@@ -1,12 +1,26 @@
-# Adaptive System Monitor
+<p align="center">
+  <img src="icon.svg" width="96" height="96" alt="Adaptive System Monitor icon">
+</p>
 
-A Cinnamon applet that combines CPU, memory, swap, CPU temperature, AMD GPU
-and VRAM monitoring in one panel item. Its layout follows the panel
-orientation automatically.
+<h1 align="center">Adaptive System Monitor</h1>
+
+<p align="center">
+  CPU, memory, swap, temperature and AMD GPU monitoring in one compact
+  Cinnamon panel applet — adaptive on horizontal and vertical panels.
+</p>
+
+<p align="center">
+  <a href="https://github.com/ClaudiuSchuster/cinnamon-system-monitor/actions/workflows/check.yml"><img alt="Checks" src="https://github.com/ClaudiuSchuster/cinnamon-system-monitor/actions/workflows/check.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="License GPL-3.0-or-later" src="https://img.shields.io/badge/license-GPL--3.0--or--later-6f5bd5"></a>
+  <img alt="Cinnamon 5.8 or newer" src="https://img.shields.io/badge/Cinnamon-5.8%2B-75c46b">
+  <img alt="AMD GPU support" src="https://img.shields.io/badge/AMD%20GPU-optional-ed1c24">
+</p>
 
 | Icons (default) | Text labels |
 | --- | --- |
 | <img src="docs/vertical-panel.png" alt="Vertical panel with metric icons" width="120"> | <img src="docs/vertical-panel-text.png" alt="Vertical panel with metric text labels" width="120"> |
+
+## Why it stands out
 
 - Horizontal panels show a compact single row.
 - Vertical panels stack metrics and keep every value narrow enough for a
@@ -23,6 +37,9 @@ orientation automatically.
   `radeontop` from running.
 - The click menu includes system-monitor launchers and a `Restart Cinnamon`
   action inherited from the Combined Monitor workflow.
+
+CPU, memory, swap and temperature are read directly from Linux interfaces.
+There is no background daemon, web service or telemetry.
 
 ## Settings
 
@@ -73,6 +90,8 @@ make check
 
 The checks validate JavaScript syntax, metric parsers, JSON schemas, SVG
 assets and shell scripts.
+
+Every push and pull request runs the same validation in GitHub Actions.
 
 ## Origin and license
 
