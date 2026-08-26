@@ -16,8 +16,8 @@
   <img alt="AMD GPU support" src="https://img.shields.io/badge/AMD%20GPU-optional-ed1c24">
 </p>
 
-| Icons (default) | Text labels |
-| --- | --- |
+| Icons (default)                                                                        | Text labels                                                                                       |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | <img src="docs/vertical-panel.png" alt="Vertical panel with metric icons" width="120"> | <img src="docs/vertical-panel-text.png" alt="Vertical panel with metric text labels" width="120"> |
 
 ## Why it stands out
