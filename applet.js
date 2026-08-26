@@ -1,3 +1,6 @@
+/* global imports */
+/* exported main */
+
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 const Applet = imports.ui.applet;
@@ -544,7 +547,7 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
         try {
             const [success, contents] = GLib.file_get_contents(path);
             return success ? ByteArray.toString(contents).trim() : null;
-        } catch (error) {
+        } catch {
             return null;
         }
     }
@@ -624,6 +627,8 @@ class AdaptiveSystemMonitorApplet extends Applet.Applet {
     }
 }
 
+// Cinnamon loads this entry point by name.
+// eslint-disable-next-line no-unused-vars
 function main(metadata, orientation, panelHeight, instanceId) {
     return new AdaptiveSystemMonitorApplet(metadata, orientation, panelHeight, instanceId);
 }
