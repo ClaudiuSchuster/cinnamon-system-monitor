@@ -1,0 +1,6 @@
+{
+  "generic": {
+    "output": ".github/social-preview.png",
+    "tagline": "CPU, memory, swap, temperature and optional AMD GPU insight."
+  }
+}

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="leftShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#080b12" stop-opacity="0.99"/>
+      <stop offset="0.52" stop-color="#080b12" stop-opacity="0.92"/>
+      <stop offset="0.74" stop-color="#080b12" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#080b12" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#55efc4"/>
+      <stop offset="0.56" stop-color="#46c9e9"/>
+      <stop offset="1" stop-color="#f2b66d"/>
+    </linearGradient>
+    <linearGradient id="iconTile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#343c43"/>
+      <stop offset="0.52" stop-color="#252d34"/>
+      <stop offset="1" stop-color="#171d23"/>
+    </linearGradient>
+    <filter id="tileGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#leftShade)"/>
+  <rect x="1" y="1" width="1278" height="638" rx="26" fill="none" stroke="#75e5c4" stroke-opacity="0.22" stroke-width="2"/>
+
+  <text x="76" y="78" fill="#9facb9" font-family="Noto Sans, sans-serif" font-size="18" font-weight="700" letter-spacing="3">OSS SINGULARITY  /  OPEN SOURCE</text>
+  <rect x="76" y="101" width="248" height="5" rx="2.5" fill="url(#accent)"/>
+
+  <rect x="78" y="158" width="108" height="108" rx="31" fill="#55efc4" opacity="0.18" filter="url(#tileGlow)"/>
+  <rect x="76" y="156" width="112" height="112" rx="32" fill="url(#iconTile)" stroke="#75e5c4" stroke-opacity="0.46"/>
+
+  <text x="218" y="204" fill="#ffffff" font-family="Noto Sans, sans-serif" font-size="48" font-weight="800">Adaptive System Monitor</text>
+  <text x="218" y="252" fill="#d6e4e7" font-family="Noto Sans, sans-serif" font-size="32" font-weight="600">for Cinnamon</text>
+
+  <text x="76" y="356" fill="#f4f8fa" font-family="Noto Sans, sans-serif" font-size="30" font-weight="600">System health, at a glance.</text>
+  <text x="76" y="399" fill="#aebcc5" font-family="Noto Sans, sans-serif" font-size="18">{{TAGLINE}}</text>
+
+  <g font-family="Noto Sans, sans-serif" font-size="15" font-weight="700" letter-spacing="1.25">
+    <rect x="76" y="449" width="207" height="38" rx="19" fill="#111a20" stroke="#55efc4" stroke-opacity="0.82"/>
+    <text x="179.5" y="474" text-anchor="middle" fill="#dcfff3">HORIZONTAL + VERTICAL</text>
+
+    <rect x="296" y="449" width="168" height="38" rx="19" fill="#111a20" stroke="#46c9e9" stroke-opacity="0.78"/>
+    <text x="380" y="474" text-anchor="middle" fill="#def7ff">LIVE METRICS</text>
+
+    <rect x="477" y="449" width="212" height="38" rx="19" fill="#111a20" stroke="#f2b66d" stroke-opacity="0.76"/>
+    <text x="583" y="474" text-anchor="middle" fill="#fff0dc">AMD GPU OPTIONAL</text>
+  </g>
+
+  <text x="76" y="571" fill="#7f919f" font-family="Noto Sans, sans-serif" font-size="16">github.com/oss-singularity/cinnamon-system-monitor</text>
+</svg>
